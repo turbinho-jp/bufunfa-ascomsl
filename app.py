@@ -43,7 +43,7 @@ with col1:
     )
 
     nova_linha = {
-        "Nome": nome,
+         "Nome": nome_mae,
         "Aluminio": peso_alu,
         "Oleo": litros_ole,
         "Plastico": peso_pla,
@@ -57,25 +57,7 @@ with col1:
     )
 
     st.success(f"Total a pagar: R$ {total:.2f}")
-        if nome_mae:
-            # Cálculos
-            valor_total = (peso_alu * preco_alu) + (litros_ole * preco_ole) + (peso_pla * preco_pla)
-            total_kg = peso_alu + peso_pla + (litros_ole * 0.9)
-            arvores = total_kg * 0.05
-            data_hoje = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-            
-            # Resultado na Tela
-            with col2:
-                st.header("📊 Recibo Digital")
-                st.success(f"Doadora: {nome_mae}")
-                st.metric("Total em Bufunfas", f"฿ {valor_total:.2f}")
-                st.info(f"🌳 Impacto: {arvores:.3f} árvores salvas.")
-                st.balloons()
-                
-                # Instrução de salvamento (Link direto para facilitar o CSV)
-                st.warning("Dados prontos para envio. Clique no link abaixo para abrir a planilha e conferir.")
-                st.markdown(f"[Abrir Planilha de Registros]({LINK_PLANILHA})")
-        else:
+    
             st.error("Por favor, insira o nome da doadora.")
 st.divider()
 st.subheader("📊 Histórico de Coletas")
