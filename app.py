@@ -36,7 +36,7 @@ with col1:
     
     if st.button("Calcular e Salvar"):
 
-    total = (
+        total = (
         peso_alu * preco_alu +
         litros_ole * preco_ole +
         peso_pla * preco_pla
