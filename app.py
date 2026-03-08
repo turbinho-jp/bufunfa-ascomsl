@@ -36,27 +36,31 @@ with col1:
     
     if st.button("Calcular e Salvar"):
 
+        if nome_mae == "":
+        st.error("Por favor, insira o nome da doadora.")
+
+        else:
         total = (
-        peso_alu * preco_alu +
-        litros_ole * preco_ole +
-        peso_pla * preco_pla
-    )
+            peso_alu * preco_alu +
+            litros_ole * preco_ole +
+            peso_pla * preco_pla
+        )
 
-    nova_linha = {
-        "Nome": nome_mae,
-        "Aluminio": peso_alu,
-        "Oleo": litros_ole,
-        "Plastico": peso_pla,
-        "Total": total,
-        "Data": datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
-    }
+        nova_linha = {
+            "Nome": nome_mae,
+            "Aluminio": peso_alu,
+            "Oleo": litros_ole,
+            "Plastico": peso_pla,
+            "Total": total,
+            "Data": datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
+        }
 
-    st.session_state.historico = pd.concat(
-        [st.session_state.historico, pd.DataFrame([nova_linha])],
-        ignore_index=True
-    )
+        st.session_state.historico = pd.concat(
+            [st.session_state.historico, pd.DataFrame([nova_linha])],
+            ignore_index=True
+        )
 
-    st.success(f"Total a pagar: R$ {total:.2f}")
+        st.success(f"💰 Total a pagar: R$ {total:.2f}")
     
 st.divider()
 st.subheader("📊 Histórico de Coletas")
