@@ -4,7 +4,7 @@ from datetime import datetime
 
 # --- CONFIGURAÇÃO ESTRATÉGICA ---
 # Substitua pelo link que você copiou da sua planilha (entre as aspas)
-LINK_PLANILHA = "COLE_AQUI_O_LINK_DA_SUA_PLANILHA"
+LINK_PLANILHA = "https://docs.google.com/spreadsheets/d/1OyyByD4qQ6vDupvh4vS3ZMif7qPyBjH_we_ow8LXyG0/edit?gid=0#gid=0"
 
 st.set_page_config(page_title="Sistema Bufunfa - ASCOMSL", layout="wide")
 
