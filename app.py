@@ -67,7 +67,6 @@ st.subheader("📊 Histórico de Coletas")
 st.dataframe(historico)
 # --- HISTÓRICO ---
 st.divider()
-st.subheader("📊 Histórico de Coletas")
 
 st.dataframe(historico)
 
