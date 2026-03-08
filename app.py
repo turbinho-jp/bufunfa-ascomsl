@@ -69,12 +69,12 @@ st.dataframe(historico)
 st.divider()
 st.subheader("📊 Histórico de Coletas")
 
-st.dataframe(st.session_state.historico)
+st.dataframe(historico)
 
 st.divider()
 st.subheader("📊 Indicadores de Reciclagem")
 
-if not st.session_state.historico.empty:
+if not historico.empty:
 
     total_alu = st.session_state.historico["Aluminio"].sum()
     total_oleo = st.session_state.historico["Oleo"].sum()
