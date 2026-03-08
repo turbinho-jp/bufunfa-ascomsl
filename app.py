@@ -43,7 +43,7 @@ with col1:
     )
 
     nova_linha = {
-         "Nome": nome_mae,
+        "Nome": nome_mae,
         "Aluminio": peso_alu,
         "Oleo": litros_ole,
         "Plastico": peso_pla,
@@ -58,7 +58,6 @@ with col1:
 
     st.success(f"Total a pagar: R$ {total:.2f}")
     
-            st.error("Por favor, insira o nome da doadora.")
 st.divider()
 st.subheader("📊 Histórico de Coletas")
 st.dataframe(st.session_state.historico)
