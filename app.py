@@ -68,8 +68,6 @@ st.dataframe(historico)
 # --- HISTÓRICO ---
 st.divider()
 
-st.dataframe(historico)
-
 st.divider()
 st.subheader("📊 Indicadores de Reciclagem")
 
