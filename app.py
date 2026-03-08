@@ -2,6 +2,12 @@ import streamlit as st
 import pandas as pd
 import datetime
 
+# criar histórico se não existir
+if "historico" not in st.session_state:
+    st.session_state.historico = pd.DataFrame(
+        columns=["Nome","Aluminio","Oleo","Plastico","Total","Data"]
+    )
+
 PLANILHA_URL = "https://docs.google.com/spreadsheets/d/1OyyByD4qQ6vDupvh4vS3ZMif7qPyBjH_we_ow8LXyG0/gviz/tq?tqx=out:csv"
 
 st.set_page_config(page_title="Sistema Bufunfa", layout="wide")
