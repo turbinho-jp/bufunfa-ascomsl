@@ -59,4 +59,37 @@ st.divider()
 st.subheader("📊 Histórico de Coletas")
 
 st.dataframe(historico)
+# --- HISTÓRICO ---
+st.divider()
+st.subheader("📊 Histórico de Coletas")
+
+st.dataframe(st.session_state.historico)
+
+st.divider()
+st.subheader("📊 Indicadores de Reciclagem")
+
+if not st.session_state.historico.empty:
+
+    total_alu = st.session_state.historico["Aluminio"].sum()
+    total_oleo = st.session_state.historico["Oleo"].sum()
+    total_pla = st.session_state.historico["Plastico"].sum()
+    total_pago = st.session_state.historico["Total"].sum()
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    col1.metric("♻️ Alumínio coletado (kg)", round(total_alu,2))
+    col2.metric("🛢 Óleo coletado (L)", round(total_oleo,2))
+    col3.metric("🧴 Plástico coletado (kg)", round(total_pla,2))
+    col4.metric("💰 Total pago (R$)", round(total_pago,2))
+
+    st.subheader("📈 Gráfico de materiais coletados")
+
+    dados = {
+        "Material":["Alumínio","Óleo","Plástico"],
+        "Quantidade":[total_alu,total_oleo,total_pla]
+    }
+
+    df_graf = pd.DataFrame(dados)
+
+    st.bar_chart(df_graf.set_index("Material"))
 
