@@ -1,12 +1,16 @@
 import streamlit as st
 import pandas as pd
-from datetime import datetime
+import datetime
 
 # --- CONFIGURAÇÃO ESTRATÉGICA ---
 # Substitua pelo link que você copiou da sua planilha (entre as aspas)
 LINK_PLANILHA = "https://docs.google.com/spreadsheets/d/1OyyByD4qQ6vDupvh4vS3ZMif7qPyBjH_we_ow8LXyG0/edit?gid=0#gid=0"
 
 st.set_page_config(page_title="Sistema Bufunfa - ASCOMSL", layout="wide")
+if "historico" not in st.session_state:
+    st.session_state.historico = pd.DataFrame(
+        columns=["Nome", "Aluminio", "Oleo", "Plastico", "Total", "Data"]
+    )
 
 st.title("💰 Gestão de Reciclagem Bufunfa")
 st.subheader("Associação Comunitária São Luiz (ASCOMSL)")
@@ -31,6 +35,28 @@ with col1:
     peso_pla = st.number_input("Peso Plástico (kg)", min_value=0.0)
     
     if st.button("Calcular e Salvar"):
+
+    total = (
+        peso_alu * preco_alu +
+        litros_ole * preco_ole +
+        peso_pla * preco_pla
+    )
+
+    nova_linha = {
+        "Nome": nome,
+        "Aluminio": peso_alu,
+        "Oleo": litros_ole,
+        "Plastico": peso_pla,
+        "Total": total,
+        "Data": datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
+    }
+
+    st.session_state.historico = pd.concat(
+        [st.session_state.historico, pd.DataFrame([nova_linha])],
+        ignore_index=True
+    )
+
+    st.success(f"Total a pagar: R$ {total:.2f}")
         if nome_mae:
             # Cálculos
             valor_total = (peso_alu * preco_alu) + (litros_ole * preco_ole) + (peso_pla * preco_pla)
@@ -51,3 +77,6 @@ with col1:
                 st.markdown(f"[Abrir Planilha de Registros]({LINK_PLANILHA})")
         else:
             st.error("Por favor, insira o nome da doadora.")
+st.divider()
+st.subheader("📊 Histórico de Coletas")
+st.dataframe(st.session_state.historico)
