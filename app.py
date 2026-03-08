@@ -9,16 +9,18 @@ st.set_page_config(page_title="Sistema Bufunfa - ASCOMSL", layout="wide")
 
 LINK_PLANILHA = "https://docs.google.com/spreadsheets/d/1OyyByD4qQ6vDupvh4vS3ZMif7qPyBjH_we_ow8LXyG0/edit?gid=0#gid=0"
 
-# Conexão com a planilha (cache para não reconectar toda hora)
+# ========================= CONEXÃO COM A PLANILHA (STREAMLIT CLOUD) =========================
 @st.cache_resource
 def conectar_planilha():
     scope = [
         "https://www.googleapis.com/auth/spreadsheets",
         "https://www.googleapis.com/auth/drive"
     ]
-    creds = Credentials.from_service_account_file("credentials.json", scopes=scope)
+    creds = Credentials.from_service_account_info(
+        st.secrets["gspread"], scopes=scope
+    )
     client = gspread.authorize(creds)
-    return client.open_by_url(LINK_PLANILHA).sheet1  # primeira aba da planilha
+    return client.open_by_url(LINK_PLANILHA).sheet1
 
 ws = conectar_planilha()
 
@@ -54,11 +56,12 @@ with col1:
     peso_pla = st.number_input("Peso Plástico (kg)", min_value=0.0)
 
     if st.button("💰 Calcular e Salvar na Planilha", type="primary"):
-        if not nome_mae:
+        if not nome_mae.strip():
             st.error("Por favor, insira o nome da doadora.")
         else:
             total = peso_alu * preco_alu + litros_ole * preco_ole + peso_pla * preco_pla
 
+            # Salva na planilha
             nova_linha = [
                 nome_mae,
                 peso_alu,
@@ -67,11 +70,9 @@ with col1:
                 total,
                 datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
             ]
-
-            # Salva na planilha
             ws.append_row(nova_linha)
 
-            # Atualiza o dataframe na memória
+            # Atualiza o dataframe
             nova_df = pd.DataFrame([{
                 "Nome": nome_mae,
                 "Aluminio": peso_alu,
@@ -101,13 +102,11 @@ with col2:
 st.divider()
 st.subheader("📋 Histórico de Coletas")
 
-# Filtro de busca
 busca = st.text_input("🔍 Buscar por nome da mãe", "")
 df_filtrado = st.session_state.historico
 if busca:
     df_filtrado = df_filtrado[df_filtrado["Nome"].str.contains(busca, case=False)]
 
-# Formatação bonita
 st.dataframe(
     df_filtrado.style.format({
         "Aluminio": "{:.2f} kg",
@@ -120,4 +119,4 @@ st.dataframe(
 )
 
 if df_filtrado.empty and busca:
-    st.info("Nenhum registro encontrado com esse nome.")
+    st.info("Nenhum registro encontrado.")
